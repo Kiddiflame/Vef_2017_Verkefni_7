@@ -1,15 +1,19 @@
+
 //1. Besta leiðin til að binda event with element er með að nota Dom level 2 event listeners, þar sem hægt er að binda meira en eitt function við eitt element
 /*
 element.addEventListener('event', functionName [, boolean]);
 */
-//2. Callbacks eru bara asynchronous leið til að kalla á functions án þess að stoppa öll önnur javascript functions á meðan það eina function keyrir. Þetta gerir vefsíður hraðari og mun þægilegri fyrir notanda
 
+//2. Callbacks eru bara asynchronous leið til að kalla á functions án þess að stoppa öll önnur javascript functions á meðan það eina function keyrir. Þetta gerir vefsíður hraðari og mun þægilegri fyrir notanda
+/*
+a(b)
+*/
 //3. Event loop er einfaldlega ferillinn sem javascript þýðandinn í vefsíðum fer í gegnum til að vísa í, kalla á, geyma og loks keira functions eins og er viðeigandi. Síðan kannar hvort function er í "cue-inu" og síðan keyrir það upp, nýtt function er sett í cue-ið í staðin, og svo þegar fyrsta function-ið er búið, sækir það næsta function í röðinni
 
 //4.
 /*
 "use strict";
-function checkUsername() {
+function checkUsername(e) {
 var target = e.target;
 }
 var el = document.getElementById("username");
@@ -27,41 +31,21 @@ preventDefault() geturðu notað til að stoppa af default hegðun ákveðna for
 
 //7
 
-function getTarget(e)
-{
-  if(!e)
-  {
-   e = window.eventL
+function changeColor(e) {                           
+  e.preventDefault(); //nota prevent default
+  var target, elParent; //skilgreini variables sem ég nota
+
+  target = e.target; //læt target jafngilda það sem maður click-ar á
+
+  if ( target.nodeName.toLowerCase() == "div") { //ef notandi ýtir á div
+     target.style.backgroundColor = "red"; //lætur bakgrunnslit af div vera rauður
   }
-  return e.target || e.srcElement;
-}
-
-function changeColor(e)
-{
-  var target, elParent, elGrandparent;
-  target = getTarget(e);
-  elParent = target.parentNode;
-  elGrandparent = target.parentNode.parentNode;
-  elParent.style.backgroundColor(rgb(255,0,0))
-
-
-  if(e.preventDefault)
+  else if(target.nodeName.toLowerCase() == "p") //ef notandi ýtir á p tagið
   {
-  e.preventDefault();
-  }
-  else
-  {
-  e.returnValue = false;
+    elParent = target.parentNode; //skilgreinir div sem parent af p                          
+    elParent.style.backgroundColor = "red"; //lætur bakgrunnslit af parentinum vera rauður
   }
 }
 
-var el = document.getElementById('box');
-if (el.addEventlistener) 
-{
-  el.addEventlistener('click', function(e)
-  {
-    changeColor(e);
-  }, false);
-}
-
-
+var el = document.getElementById('box'); //sækir í box div-ið
+el.addEventListener('click', changeColor, false); //þegar er ýtt á el, eða boxið, þá keyrist changeColor
